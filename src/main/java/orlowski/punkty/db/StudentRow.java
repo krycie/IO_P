@@ -1,10 +1,8 @@
 package orlowski.punkty.db;
 
-import javax.persistence.Id;;
+import orlowski.punkty.Student;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;;import java.util.Set;
 
 @Entity
 public class StudentRow {
@@ -16,11 +14,23 @@ public class StudentRow {
     private String deansGroup;
 
     protected StudentRow() {};
+
+    @OneToMany(mappedBy = "student")
+    private Set<ScoreRow> scores;
+
     public StudentRow(String name, String number, String deansGroup) {
-        System.out.println("tak");
         this.name = name;
         this.number = number;
         this.deansGroup = deansGroup;
+    }
+
+    public Student toStudent() {
+        return new Student(
+                this.id,
+                this.name,
+                this.number,
+                this.deansGroup
+        );
     }
 
     public long getId() {
@@ -39,6 +49,10 @@ public class StudentRow {
         return this.deansGroup;
     }
 
+    public Set<ScoreRow> getScores() {
+        return scores;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -53,5 +67,9 @@ public class StudentRow {
 
     public void setDeansGroup(String deansGroup) {
         this.deansGroup = deansGroup;
+    }
+
+    public void setScores(Set<ScoreRow> scores) {
+        this.scores = scores;
     }
 }
